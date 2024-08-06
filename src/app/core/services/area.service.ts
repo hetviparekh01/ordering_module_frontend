@@ -1,18 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AreaService {
 
+
   constructor(private http:HttpClient) { }
 
   getAllAreas(queryParams:any){
-    return this.http.get<any>('/area/getAllAreas',{
+    const dataObesrevable= this.http.get<any>('/area/getAllAreas',{
       params:queryParams
-    })
+    });
+    return dataObesrevable
   }
+
+
 
   changeSequence(data:any){
     return this.http.post('/area/changeSequence',data)

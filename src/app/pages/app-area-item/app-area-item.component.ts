@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ColDef } from 'ag-grid-community';
 import { AreaItemService } from 'src/app/core/services/area-item.service';
+import { AreaService } from 'src/app/core/services/area.service';
 import { NgxToasterService } from 'src/app/core/services/ngx-toaster.service';
+import { SharedService } from 'src/app/core/services/shared.service';
 import { CellRendererComponent } from 'src/app/shared/cell-renderer/cell-renderer.component';
 
 @Component({
@@ -29,10 +31,13 @@ export class AppAreaItemComponent implements OnInit {
       },
     },
   ];
+  areaData: any;
   constructor(
     private areaItemService: AreaItemService,
     private toasterService: NgxToasterService,
-    private activatedRoute: ActivatedRoute  
+    private activatedRoute: ActivatedRoute,
+    private sharedServcie:SharedService ,
+    private areaService: AreaService,
   ) {}
   ngOnInit(): void {
     this.getAreaItemByArea()
@@ -79,7 +84,8 @@ export class AppAreaItemComponent implements OnInit {
       this.areaItemService.changeSequence({ sequence, areaItemId }).subscribe({
         next: (response: any) => {
           if (response.status) {
-            this.getAreaItemByArea()
+            this.getAreaItemByArea();
+            this.getAllAreas()
           } else {
             this.toasterService.showError(response.messgae)
           }
@@ -90,5 +96,20 @@ export class AppAreaItemComponent implements OnInit {
       });
     }
   }
-  
+  getAllAreas() {
+    this.areaService.getAllAreas(this.queryParams).subscribe({
+      next: (response) => {
+        console.log(response);
+        if (response.status) {
+          this.sharedServcie.setAreaSubject(response.data)
+          this.areaData = response.data
+        } else {
+          this.toasterService.showError(response.messgae)
+        }
+      },
+      error: (err) => {
+        this.toasterService.showError(err.error.messgae)
+      },
+    })
+  }
 }

@@ -1,0 +1,31 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-9 " >
+            <router-outlet></router-outlet>
+        </div>
+        <div class="col-3">
+            <div class="mobile">
+                <div class="phone">
+                    <div class="phone-mirror">
+                        <div class="topWrapper">
+                            <div class="camera"></div>
+                            <div class="line-rec"></div>
+                        </div>
+                        <div class="mobileContent mt-5 mx-2">
+                            <div class="area" *ngFor="let area of data">
+                                <h5>{{area.areaName}}</h5>
+                                <div class="d-flex">
+                                    <div class="card m-1 p-3 text-center" style="width: 7rem;"
+                                        *ngFor="let item of area.areaItemDetails">
+                                        <h6 class="text-muted">{{item.itemDetails.itemName}}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -3,79 +3,101 @@ import { Route, Router } from '@angular/router';
 import { ColDef } from 'ag-grid-community';
 import { AreaService } from 'src/app/core/services/area.service';
 import { NgxToasterService } from 'src/app/core/services/ngx-toaster.service';
+import { SharedService } from 'src/app/core/services/shared.service';
 import { CellRendererComponent } from 'src/app/shared/cell-renderer/cell-renderer.component';
 
 @Component({
   selector: 'app-app-home-page',
   templateUrl: './app-home-page.component.html',
-  styleUrls: ['./app-home-page.component.scss']
+  styleUrls: ['./app-home-page.component.scss'],
 })
 export class AppHomePageComponent implements OnInit {
-  queryParams={};
-  areaData:any;
-  columnDefs:ColDef[]=[
-    { field: "_id", rowDrag: true ,flex:2},
-    { field: "areaName" ,flex:1},
-    { field: "sequence" ,flex:1},
-    {field:"Action",flex:1,cellRenderer:CellRendererComponent,cellRendererParams:{
-      updateBtn:(id:string)=>this.updateArea(id),
-      deleteBtn:(id:string)=>this.deleteArea(id)
-    }}
-  ]
-  constructor (private areaService:AreaService,private toasterService:NgxToasterService,private router:Router){}
+  queryParams = {};
+  areaData: any;
+  columnDefs: ColDef[] = [
+    { field: '_id', rowDrag: true, flex: 2 },
+    { field: 'areaName', flex: 1 },
+    { field: 'sequence', flex: 1 },
+    {
+      field: 'Action',
+      flex: 1,
+      cellRenderer: CellRendererComponent,
+      cellRendererParams: {
+        updateBtn: (id: string) => this.updateArea(id),
+        deleteBtn: (id: string) => this.deleteArea(id),
+      },
+    },
+  ];
+  constructor(
+    private areaService: AreaService,
+    private toasterService: NgxToasterService,
+    private router: Router,
+    private sharedService: SharedService
+  ) {}
   ngOnInit(): void {
-    this.getAllAreas()
+    this.getAllAreas();
   }
   updateArea(id: string) {
-    this.router.navigate([`/appAreaItem/${id}`])
+    this.router.navigate([`/appAreaItem/${id}`]);
   }
   deleteArea(id: string) {
-   this.areaService.deleteArea(id).subscribe({
-     next: (response:any) => {
-       if (response.status) {
-          this.getAllAreas()
-          this.toasterService.showSuccess(response.message)
-       } else {
-         this.toasterService.showError(response.messgae)
-       }
-     },
-     error: (err) => {
-       this.toasterService.showError(err.error.messgae)
-     },
-   })
-  }
-  getAllAreas(){
-    this.areaService.getAllAreas(this.queryParams).subscribe({
-      next:(response) =>{
-        if(response.status){
-          this.areaData =response.data
-        }else{
-          this.toasterService.showError(response.messgae)
+    this.areaService.deleteArea(id).subscribe({
+      next: (response: any) => {
+        if (response.status) {
+          this.getAllAreas();
+          this.toasterService.showSuccess(response.message);
+        } else {
+          this.toasterService.showError(response.messgae);
         }
       },
-      error:(err)=> {
-        this.toasterService.showError(err.error.messgae)
+      error: (err) => {
+        this.toasterService.showError(err.error.messgae);
       },
-    })
+    });
   }
-  changeSequence(e:any) {
+  getAllAreas() {
+    this.areaService.getAllAreas(this.queryParams).subscribe({
+      next: (response) => {
+        if (response.status) {
+          this.sharedService.setAreaSubject(response.data);
+          this.areaData = response.data;
+        } else {
+          this.toasterService.showError(response.messgae);
+        }
+      },
+      error: (err) => {
+        this.toasterService.showError(err.error.messgae);
+      },
+    });
+  }
+
+  // getAllAreas(){
+  //   this.sharedService.areaSubject$.subscribe({
+  //     next:(response) =>{
+  //       this.areaData = response;
+  //     },
+  //     error: (err) => {
+  //       this.toasterService.showError(err.error.messgae);
+  //     },
+  //   })
+  // }
+  changeSequence(e: any) {
     const sequence = e.overIndex + 1;
     const areaId = e.node.data._id;
 
     if (e.overIndex > -1) {
       this.areaService.changeSequence({ sequence, areaId }).subscribe({
-        next:(response:any) =>{
-          if(response.status){
-            this.getAllAreas()
-          }else{
-            this.toasterService.showError(response.messgae)
+        next: (response: any) => {
+          if (response.status) {
+            this.getAllAreas();
+          } else {
+            this.toasterService.showError(response.messgae);
           }
         },
         error: (err) => {
-          this.toasterService.showError(err.error.messgae)
+          this.toasterService.showError(err.error.messgae);
         },
       });
     }
   }
-
 }

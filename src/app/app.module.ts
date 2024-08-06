@@ -7,16 +7,19 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
 import { BaseUrlInterceptor } from './core/interceptors/base-url.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LayoutModule } from './layout/layout.module';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule, 
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    LayoutModule
+    
   ],
   providers: [
     {
