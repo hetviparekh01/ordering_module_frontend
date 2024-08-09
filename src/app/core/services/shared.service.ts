@@ -10,15 +10,12 @@ export class SharedService {
   areaSubject = new Subject<any>();
   areaSubject$ = this.areaSubject.asObservable();
 
-  itemSubject=new Subject<any>();
-  itemSubject$=this.itemSubject.asObservable();
+
 
   setAreaSubject(value:any){
     this.areaSubject.next(value)
   }
 
-  setItemSubject(value:any){
-    this.itemSubject.next(value)    
-  }
+ 
 
 }

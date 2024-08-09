@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-9 " >
+        <div class="col-9 ">
             <router-outlet></router-outlet>
         </div>
         <div class="col-3">
@@ -11,7 +11,7 @@
                             <div class="camera"></div>
                             <div class="line-rec"></div>
                         </div>
-                        <div class="mobileContent mt-5 mx-2">
+                        <!-- <div class="mobileContent mt-5 mx-2">
                             <div class="area" *ngFor="let area of data">
                                 <h5>{{area.areaName}}</h5>
                                 <div class="d-flex">
@@ -19,6 +19,41 @@
                                         *ngFor="let item of area.areaItemDetails">
                                         <h6 class="text-muted">{{item.itemDetails.itemName}}</h6>
                                     </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="mobileContent mt-5 mx-2">
+                            <div class="area" *ngFor="let area of data">
+                                <h5>{{area.areaName}}</h5>
+                                <div id="carouselExampleFade" class="carousel slide carousel-fade">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active">
+                                            <div class="row">
+                                                <div class="d-flex">
+                                                    <div class="card m-1 p-3 text-center" style="width: 7rem;"
+                                                        *ngFor="let item of area.areaItemDetails">
+                                                        <h6 class="text-muted">{{item.itemDetails.itemName}}</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="carousel-item">
+                                            Hii
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img src="..." class="d-block w-100" alt="...">
+                                        </div>
+                                    </div>
+                                    <button class="carousel-control-prev" type="button"
+                                        data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button"
+                                        data-bs-target="#carouselExampleFade" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
